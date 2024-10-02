@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
             $table->string('name', 255);
-            $table->string('email');
-            $table->string('password');
+            $table->string('address');
+            $table->string('phone_number');
             $table->text('about')->nullable();
+            $table->string("email")->unique();
+            $table->foreignId("created_by")->nullable()->references("id")->on("admins")->constrained();
             $table->timestamps();
         });
     }

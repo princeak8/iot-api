@@ -24,12 +24,14 @@ class CreateComponent extends BaseRequest
     {
         $rules = [
             "name" => "required|string",
-            "identifier" => "required|string",
+            "codeName" => "required|string",
             "categoryId" => "required|integer|exists:component_categories,id",
-            "moduleId" => "required|integer|exists:modules,id",
-            "topic" => "nullable|string"
+            "subModuleId" => "required|integer|exists:sub_modules,id",
+            "actionable" => "nullable|boolean",
+            "topic" => "nullable|required_if:actionable,true|string",
+            "parameterIds" => "nullable|array",
+            "parameterIds.*" => "integer|exists:parameters,id"
         ];
-        $rules["identifier"] = Rule::unique('components')->where(fn (Builder $query) => $query->where('module_id', $this->moduleId));
         return $rules;
     }
 }

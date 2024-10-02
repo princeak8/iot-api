@@ -16,7 +16,7 @@ class ClientAuth
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ( Auth::check()) 
+        if ( Auth::guard('client')->check()) 
         {
             return $next($request);
         }

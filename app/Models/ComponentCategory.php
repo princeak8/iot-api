@@ -16,6 +16,12 @@ class ComponentCategory extends Model
 
     public function parameters()
     {
-        return $this->belongsToMany('App\Models\Parameter', 'App\Models\ComponentCategoryParameter', 'category_id', 'parameter_id');
+        return $this->belongsToMany('App\Models\Parameter', 'App\Models\CategoryParameter', 'category_id', 'parameter_id');
     }
+
+    public function components()
+    {
+        return $this->hasMany("App\Models\Component", "category_id", "id");
+    }
+
 }

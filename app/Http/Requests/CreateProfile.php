@@ -6,6 +6,8 @@ use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\BaseRequest;
 use Illuminate\Validation\Rule;
 
+use Illuminate\Support\Facades\Auth;
+
 class CreateProfile extends BaseRequest
 {
     /**
@@ -24,13 +26,12 @@ class CreateProfile extends BaseRequest
     public function rules(): array
     {
         return [
-            "name" => "required|string",
-            "username" => ["required",Rule::unique('profiles')
+            "clientId" => "required|integer|exists:clients,id",
+            "about" => "required|string",
+            "name" => ["required",Rule::unique('profiles')
             ->where(function ($query) {
-                return $query->where('client_id', request('client_id'));
+                return $query->where('client_id', $this->client_id);
             })],
-            "password" => "required|string",
-            "clientId" => "required|exists:clients,id"
         ];
     }
 }

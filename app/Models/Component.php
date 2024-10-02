@@ -9,13 +9,18 @@ class Component extends Model
 {
     use HasFactory;
 
-    public function componentGroups() 
-    {
-        return $this->hasMany("App\Models\ComponentGroup", "component_id", "id");
-    }
-
     public function category()
     {
         return $this->belongsTo("App\Models\ComponentCategory", "category_id", "id");
+    }
+
+    public function subModule()
+    {
+        return $this->belongsTo("App\Models\SubModule");
+    }
+
+    public function parameters()
+    {
+        return $this->belongsToMany('App\Models\Parameter', 'App\Models\ComponentParameter', 'component_id', 'parameter_id');
     }
 }

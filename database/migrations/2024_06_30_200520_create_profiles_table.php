@@ -14,9 +14,8 @@ return new class extends Migration
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('username');
-            $table->string('password');
-            $table->foreignId('client_id')->constrained();
+            $table->text('about')->nullable();
+            $table->foreignId('client_id')->references("id")->on("clients")->constrained();
             $table->timestamps();
         });
     }

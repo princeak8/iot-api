@@ -9,14 +9,9 @@ class Module extends Model
 {
     use HasFactory;
 
-    public function components() 
+    public function subModules() 
     {
-        return $this->hasMany("App\Models\Component");
-    }
-
-    public function profile()
-    {
-        return $this->belongsTo("App\Models\Profile");
+        return $this->hasMany("App\Models\SubModule");
     }
 
     public function type()

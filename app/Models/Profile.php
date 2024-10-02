@@ -7,32 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-use Tymon\JWTAuth\Contracts\JWTSubject;
-
-class Profile extends Authenticatable implements JWTSubject
+class Profile extends Model
 {
-    use HasFactory, Notifiable;
-
-    /**
-     * Get the identifier that will be stored in the subject claim of the JWT.
-     *
-     * @return mixed
-     */
-    public function getJWTIdentifier() {
-        return $this->getKey();
-    }
-
-    /**
-     * Return a key value array, containing any custom claims to be added to the JWT.
-     *
-     * @return array
-     */
-    public function getJWTCustomClaims() {
-        return [];
-    }
+    use HasFactory;
 
     public function client()
     {
         return $this->belongsTo('App\Models\Client');
+    }
+
+    public function modules()
+    {
+        return $this->hasMany("App\Models\modules");
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany('App\Models\User', 'App\Models\ProfileUser', 'profile_id', 'user_id');
     }
 }

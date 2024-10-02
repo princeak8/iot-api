@@ -7,7 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 use App\Http\Resources\ProfileResource;
 use App\Http\Resources\ModuleTypeResource;
-use App\Http\Resources\ComponentResource;
+use App\Http\Resources\SubModuleResource;
 
 class ModuleResource extends JsonResource
 {
@@ -24,7 +24,7 @@ class ModuleResource extends JsonResource
             "profile" => new ProfileResource($this->profile),
             "description" => $this->description,
             "type" => new ModuleTypeResource($this->type),
-            "components" => ComponentResource::collection($this->components)
+            "subModules" => SubModuleResource::collection($this->subModules)
         ];
     }
 }

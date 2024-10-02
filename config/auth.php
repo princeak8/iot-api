@@ -14,8 +14,8 @@ return [
     */
 
     'defaults' => [
-        'guard' => env('AUTH_GUARD', 'client'),
-        'passwords' => env('AUTH_PASSWORD_BROKER', 'clients'),
+        'guard' => env('AUTH_GUARD', 'user'),
+        'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
     ],
 
     /*
@@ -38,21 +38,16 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'clients',
+            'provider' => 'users',
         ],
-        'client' => [
+        'admin' => [
             'driver' => 'jwt',
-            'provider' => 'clients',
+            'provider' => 'admins',
             'hash' => true,
         ],
-        'profile' => [
+        'user' => [
             'driver' => 'jwt',
-            'provider' => 'profiles',
-            'hash' => true,
-        ],
-        'viewer' => [
-            'driver' => 'jwt',
-            'provider' => 'viewers',
+            'provider' => 'users',
             'hash' => true,
         ]
     ],
@@ -75,19 +70,14 @@ return [
     */
 
     'providers' => [
-        'clients' => [
+        'admins' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\Client::class),
+            'model' => App\Models\Admin::class,
         ],
 
-        'profiles' => [
+        'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Profile::class,
-        ],
-
-        'viewers' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Viewer::class,
+            'model' => App\Models\User::class,
         ],
 
         // 'users' => [
@@ -116,8 +106,8 @@ return [
     */
 
     'passwords' => [
-        'clients' => [
-            'provider' => 'clients',
+        'users' => [
+            'provider' => 'users',
             'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
             'expire' => 60,
             'throttle' => 60,

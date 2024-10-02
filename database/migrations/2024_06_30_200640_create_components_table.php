@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('components', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('identifier');
+            $table->string('code_name');
             $table->foreignId('category_id')->references('id')->on('component_categories');
-            $table->foreignId('module_id')->constrained();
-            $table->boolean('actionable')->default(0);
+            $table->foreignId('sub_module_id')->references("id")->on("sub_modules")->constrained();
+            $table->boolean('actionable')->default(false);
             $table->string('sub_topic')->nullable();
             $table->timestamps();
         });

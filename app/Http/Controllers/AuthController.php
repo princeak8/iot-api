@@ -5,71 +5,48 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\ViewerLogin;
 use App\Http\Requests\Login;
 
-use App\Http\Resources\ViewerResource;
-use App\Http\Resources\ClientResource;
-use App\Http\Resources\ProfileResource;
+use App\Http\Resources\UserResource;
 
 use App\Services\AuthService;
+use App\Services\UserService;
+
+use App\Enums\Role;
 
 use App\Utilities;
 
 class AuthController extends Controller
 {
     private $authService;
+    private $userService;
 
-    public function __construct()
+    public function __construct(AuthService $authService, UserService $userService)
     {
-        $this->authService = new AuthService;
+        $this->authService = $authService;
+        $this->userService = $userService;
     }
     /**
      * @return \Illuminate\Http\JsonResponse
      */
     public function login(Login $request){
-        $credentials = $request->only('email', 'password');
-        if (! $token = Auth::attempt($credentials)) return Utilities::error402('Wrong email or password');
-        
-        $user = new ClientResource(Auth::user());
+        $credentials = $request->only('username', 'password');
+
+        // Check if the input is an email or username
+        if (filter_var($credentials['username'], FILTER_VALIDATE_EMAIL)) {
+            $credentials['email'] = $credentials['username'];
+            unset($credentials['username']);
+        }
+        if (! $token = Auth::attempt($credentials)) return Utilities::error402('Wrong username/email or password');
+        $this->userService->registerLogin(Auth::user());
+
+        $user = new UserResource(Auth::user());
         $factory = Auth::factory();
+        if(!$user->permission && $user->role->name != Role::SUPER_ADMIN->value) $token = null;
         return $this->authService->authResponse([
             'user'=>$user, 
             'factory'=>$factory, 
             'token'=>$token
-        ]);
-    }
-     /**
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function profileLogin(ViewerLogin $request){
-        $credentials = $request->only('username', 'password');
-        if (! $token = Auth::guard('profile')->attempt($credentials)) return Utilities::error402('Wrong username or password');
-        
-        $user = new ProfileResource(Auth::guard('profile')->user());
-        $factory = Auth::guard('profile')->factory();
-        return $this->authService->authResponse([
-            'user'=>$user, 
-            'factory'=>$factory, 
-            'token'=>$token
-        ]);
-    }
-    /**
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function viewerLogin(ViewerLogin $request){
-        $credentials = $request->only('username', 'password');
-        if (! $token = Auth::guard('viewer')->attempt($credentials)) return Utilities::error402('Wrong username or password');
-        
-        $user = new ViewerResource(Auth::guard('viewer')->user());
-        $factory = Auth::guard('viewer')->factory();
-        $message = 'user not authorised to view';
-        if($user->viewing_right == 0) $token = null;
-        return $this->authService->authResponse([
-            'user'=>$user, 
-            'factory'=>$factory, 
-            'token'=>$token,
-            'message'=>$message
         ]);
     }
 }

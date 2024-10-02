@@ -23,7 +23,8 @@ class CreateModuleType extends BaseRequest
     public function rules(): array
     {
         return [
-            "name" => "required|string|unique"
+            "name" => "required|string|unique:module_types,name",
+            "description" => "nullable|string"
         ];
     }
 }

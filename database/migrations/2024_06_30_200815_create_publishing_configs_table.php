@@ -15,8 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->json('template');
-            $table->string('topic');
-            $table->foreignId('module_id')->constrained();
+            $table->foreignId('sub_module_id')->references("id")->on("sub_modules")->constrained();
             $table->timestamps();
         });
     }

@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class ModuleType extends Model
 {
     use HasFactory;
+
+    public function modules()
+    {
+        return $this->hasMany("App\Models\Module");
+    }
 }

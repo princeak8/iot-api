@@ -9,25 +9,17 @@ use Illuminate\Notifications\Notifiable;
 
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class Client extends Authenticatable implements JWTSubject
+class Client extends Model
 {
     use HasFactory, Notifiable;
 
-    /**
-     * Get the identifier that will be stored in the subject claim of the JWT.
-     *
-     * @return mixed
-     */
-    public function getJWTIdentifier() {
-        return $this->getKey();
+    public function users()
+    {
+        return $this->hasMany("App\Models\User");
     }
 
-    /**
-     * Return a key value array, containing any custom claims to be added to the JWT.
-     *
-     * @return array
-     */
-    public function getJWTCustomClaims() {
-        return [];
+    public function profiles()
+    {
+        return $this->hasMany("App\Models\Profile");
     }
 }

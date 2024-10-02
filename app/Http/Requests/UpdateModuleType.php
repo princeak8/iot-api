@@ -24,7 +24,8 @@ class UpdateModuleType extends BaseRequest
     {
         return [
             "id" => "required|integer|exists:module_types,id",
-            "name" => "required|string|unique:module_types,name,".$this->id.",id"
+            "name" => "required|string|unique:module_types,name,".$this->id.",id",
+            "description" => "nullable|string"
         ];
     }
 }

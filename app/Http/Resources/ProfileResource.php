@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 use App\Http\Resources\ClientResource;
+use App\Http\Resources\UserResource;
 
 class ProfileResource extends JsonResource
 {
@@ -19,8 +20,9 @@ class ProfileResource extends JsonResource
         return [
             "id" => $this->id,
             "name" => $this->name,
-            "username" => $this->username,
-            "client" => new ClientResource($this->client)
+            "about" => $this->about,
+            "client" => new ClientResource($this->client),
+            "users" => UserResource::collection($this->whenLoaded("users"))
         ];
     }
 }

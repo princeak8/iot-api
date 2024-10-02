@@ -24,7 +24,8 @@ class CreateClient extends BaseRequest
     {
         return [
             "name" => "required|string",
-            "password" => "required|string",
+            "address" => "required|string",
+            "phoneNumber" => "required|string",
             "email" => "required|email|unique:clients",
             "about" => "nullable|string"
         ];

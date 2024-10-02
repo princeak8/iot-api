@@ -25,10 +25,10 @@ class CreateModule extends BaseRequest
      */
     public function rules(): array
     {
-        $profileId = Auth::guard('profile')->user()->id;
         return [
-            "name" => ['required','string', Rule::unique('modules')->where(function($query) use($profileId) {
-                return $query->where('profile_id', $profileId);
+            "profileId" => "required|integer|exists:profiles,id",
+            "name" => ['required','string', Rule::unique('modules')->where(function($query) {
+                return $query->where('profile_id', $this->profileId);
             })],
             "description" => "required|string",
             "moduleTypeId" => "nullable|integer|exists:module_types,id"

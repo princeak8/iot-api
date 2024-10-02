@@ -5,6 +5,9 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+use App\Http\Resources\ComponentResource;
+use App\Http\Resources\ParameterResource;
+
 class ComponentCategoryResource extends JsonResource
 {
     /**
@@ -16,7 +19,9 @@ class ComponentCategoryResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "name" => $this->name
+            "name" => $this->name,
+            "parameters" => ParameterResource::collection($this->whenLoaded('parameters')),
+            "components" => ComponentResource::collection($this->whenLoaded('components'))    
         ];
     }
 }

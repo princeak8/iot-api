@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('modules', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('profile_id')->constrained();
+            $table->foreignId('profile_id')->references("id")->on("profiles")->constrained();
             $table->string('name');
             $table->text('description');
-            $table->foreignId('module_type_id')->constrained();
+            $table->foreignId('module_type_id')->references("id")->on("module_types")->constrained();
             $table->timestamps();
         });
     }

@@ -11,9 +11,9 @@ class ComponentService
         return Component::find($id);
     }
 
-    public function components($moduleId)
+    public function components($subModuleId)
     {
-        return Component::where('module_id', $moduleId)->get();
+        return Component::where('sub_module_id', $subModuleId)->get();
     }
 
     public function categoryComponents($categoryId)
@@ -25,10 +25,11 @@ class ComponentService
     {
         $component = new Component;
         $component->name = $data['name'];
-        $component->identifier = $data['identifier'];
+        $component->code_name = $data['codeName'];
         $component->category_id = $data['categoryId'];
-        $component->module_id = $data['moduleId'];
-        $component->sub_topic = $data['topic'];
+        $component->sub_module_id = $data['subModuleId'];
+        if(isset($data['actionable'])) $component->actionable = $data['actionable'];
+        if(isset($data['topic'])) $component->sub_topic = $data['topic'];
         $component->save();
         return $component;
     }

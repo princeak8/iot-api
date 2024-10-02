@@ -44,7 +44,7 @@ class Utilities
     public function refreshToken()
     {
         $authService = new AuthService($this->guard, $this->reference);
-        return $authService->checkToRefreshToken();
+        // return $authService->checkToRefreshToken();
     }
 
     public function ok($data='')
@@ -124,7 +124,7 @@ class Utilities
     {
         return response()->json([
             'statusCode' => 402,
-            'message' => $message
+            'error' => $message
         ], 402);
     }
 

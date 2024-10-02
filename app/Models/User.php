@@ -32,17 +32,6 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
-
-    /**
      * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>
@@ -64,4 +53,25 @@ class User extends Authenticatable implements JWTSubject
             'password' => 'hashed',
         ];
     }
+
+    public function client()
+    {
+        return $this->belongsTo("App\Models\Client");
+    }
+
+    public function role()
+    {
+        return $this->belongsTo("App\Models\Role");
+    }
+
+    public function permission()
+    {
+        return $this->belongsTo("App\Models\Permission");
+    }
+
+    public function profiles()
+    {
+        return $this->belongsToMany('App\Models\Profile', 'App\Models\ProfileUser', 'user_id', 'profile_id');
+    }
+    
 }

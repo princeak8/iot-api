@@ -21,8 +21,9 @@ class ClientService
         $client = new Client;
         $client->name = $data['name'];
         $client->email = $data['email'];
+        $client->address = $data['address'];
+        $client->phone_number = $data['phoneNumber'];
         if(isset($data['about'])) $client->about = $data['about'];
-        $client->password = bcrypt($data['password']);
         $client->save();
         return $client;
     }
